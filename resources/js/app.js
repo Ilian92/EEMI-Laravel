@@ -2,7 +2,10 @@ import './bootstrap';
 
 import Alpine from 'alpinejs';
 
-import.meta.glob()
+
+import.meta.glob([
+    '../img/**',
+]);
 
 window.Alpine = Alpine;
 

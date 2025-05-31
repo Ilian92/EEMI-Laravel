@@ -1,11 +1,10 @@
 <section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Profile Information') }}
+    <header class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">
+            {{ __('Informations du Profil') }}
         </h2>
-
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __("Update your account's profile information and email address.") }}
+        <p class="text-gray-600">
+            {{ __('Modifiez les informations de votre compte et votre adresse email.') }}
         </p>
     </header>
 
@@ -13,42 +12,101 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="space-y-6">
         @csrf
         @method('patch')
 
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                {{ __('Nom') }}
+            </label>
+            <input 
+                id="name" 
+                name="name" 
+                type="text" 
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all duration-200" 
+                style="focus:ring-color: #00aff0;"
+                value="{{ old('name', $user->name) }}" 
+                required 
+                autofocus 
+                autocomplete="name"
+            />
+            @error('name')
+                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+            @enderror
         </div>
 
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+            <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+                {{ __('Nom d\'utilisateur') }}
+            </label>
+            <input 
+                id="username" 
+                name="username" 
+                type="text" 
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all duration-200" 
+                style="focus:ring-color: #00aff0;"
+                value="{{ old('username', $user->username ?? '') }}" 
+                autocomplete="username"
+            />
+            @error('username')
+                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+            @enderror
+            <p class="mt-1 text-xs text-gray-500">
+                {{ __('Votre nom d\'utilisateur sera visible publiquement sur OnlyFeets') }}
+            </p>
+        </div>
+
+        <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                {{ __('Email') }}
+            </label>
+            <input 
+                id="email" 
+                name="email" 
+                type="email" 
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all duration-200" 
+                style="focus:ring-color: #00aff0;"
+                value="{{ old('email', $user->email) }}" 
+                required 
+                autocomplete="email"
+            />
+            @error('email')
+                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+            @enderror
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-                <div>
-                    <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                        {{ __('Your email address is unverified.') }}
-
-                        <button form="send-verification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                            {{ __('Click here to re-send the verification email.') }}
+                <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <p class="text-sm text-yellow-800">
+                        {{ __('Votre adresse email n\'est pas vérifiée.') }}
+                        <button 
+                            form="send-verification" 
+                            class="underline text-sm hover:no-underline font-medium"
+                            style="color: #00aff0;"
+                        >
+                            {{ __('Cliquez ici pour renvoyer l\'email de vérification.') }}
                         </button>
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                            {{ __('A new verification link has been sent to your email address.') }}
+                        <p class="mt-2 font-medium text-sm text-green-600">
+                            {{ __('Un nouveau lien de vérification a été envoyé à votre adresse email.') }}
                         </p>
                     @endif
                 </div>
             @endif
         </div>
 
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+        <div class="flex items-center gap-4 pt-4">
+            <button 
+                type="submit"
+                class="px-6 py-3 rounded-lg font-medium text-white transition-all duration-200 hover:transform hover:scale-105"
+                style="background-color: #00aff0;"
+                onmouseover="this.style.backgroundColor='#0099d9';"
+                onmouseout="this.style.backgroundColor='#00aff0';"
+            >
+                {{ __('Sauvegarder') }}
+            </button>
 
             @if (session('status') === 'profile-updated')
                 <p
@@ -56,8 +114,10 @@
                     x-show="show"
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600 dark:text-gray-400"
-                >{{ __('Saved.') }}</p>
+                    class="text-sm text-green-600 font-medium"
+                >
+                    {{ __('Sauvegardé.') }}
+                </p>
             @endif
         </div>
     </form>
