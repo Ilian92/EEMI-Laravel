@@ -22,6 +22,12 @@ class User extends Authenticatable
         'email',
         'username',
         'password',
+        'bio',
+        'profile_picture',
+        'banner_image',
+        'subscription_price',
+        'is_creator',
+        'creator_since',
     ];
 
     /**
@@ -44,10 +50,38 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'creator_since' => 'datetime',
+            'subscription_price' => 'decimal:2',
+            'is_creator' => 'boolean',
         ];
     }
 
-    public function todos(){
-        return $this->hasMany(Todo::class, 'created_by', 'id');
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class, 'subscriber_id');
+    }
+
+    public function subscribers()
+    {
+        return $this->hasMany(Subscription::class, 'creator_id');
+    }
+
+    public function isSubscribedTo(User $creator)
+    {
+        return $this->subscriptions()
+            ->where('creator_id', $creator->id)
+            ->where('is_active', true)
+            ->where('expires_at', '>', now())
+            ->exists();
+    }
+
+    public function getProfilePictureUrlAttribute()
+    {
+        return $this->profile_picture ? asset('storage/' . $this->profile_picture) : asset('images/default-avatar.jpg');
+    }
+
+    public function getBannerImageUrlAttribute()
+    {
+        return $this->banner_image ? asset('storage/' . $this->banner_image) : asset('images/default-banner.jpg');
     }
 }
