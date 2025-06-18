@@ -15,12 +15,15 @@
       {{-- Liste des créateurs --}}
       <div class="grid md:grid-cols-3 gap-6">
         <template x-for="c in creators.data" :key="c.id">
-          <div class="bg-white p-4 rounded shadow">
+          <a
+            :href="`/${c.username}`"
+            class="block bg-white p-4 rounded shadow hover:shadow-md transition-all"
+          >
             <h2 class="font-semibold text-lg" x-text="c.name"></h2>
             <p class="text-sm text-gray-500">
               Abonnés : <span x-text="c.subscribers_count"></span>
             </p>
-          </div>
+          </a>
         </template>
       </div>
 

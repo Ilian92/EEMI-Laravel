@@ -40,5 +40,5 @@ Route::get('/parcourir', [App\Http\Controllers\CreatorController::class, 'index'
     ->name('browse');
 
 Route::get('/{username}', [UserProfileController::class, 'show'])
-    ->name('user-profile.show')
-    ->where('username', '[a-zA-Z0-9_]+');
+     ->name('user-profile.show')
+     ->where('username', '[A-Za-z0-9._-]+');
