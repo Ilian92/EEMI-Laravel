@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TodoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\BrowseController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {
@@ -34,6 +35,9 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+Route::get('/parcourir', [App\Http\Controllers\CreatorController::class, 'index'])
+    ->name('browse');
 
 Route::get('/{username}', [UserProfileController::class, 'show'])
     ->name('user-profile.show')
