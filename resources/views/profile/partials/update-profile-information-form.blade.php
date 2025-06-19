@@ -12,7 +12,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
@@ -97,13 +97,70 @@
             @endif
         </div>
 
+        @if(auth()->user()->is_creator)
+        {{-- Bio --}}
+        <div>
+            <label for="bio" class="block text-sm font-medium text-gray-700 mb-2">{{ __('Bio') }}</label>
+            <textarea
+                id="bio"
+                name="bio"
+                rows="3"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all duration-200"
+                style="focus:ring-color: #00aff0;"
+            >{{ old('bio', $user->bio) }}</textarea>
+            @error('bio')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+        </div>
+
+        {{-- Photo de profil --}}
+        <div>
+            <label for="profile_picture" class="block text-sm font-medium text-gray-700 mb-2">{{ __('Photo de profil') }}</label>
+            <input
+                id="profile_picture"
+                name="profile_picture"
+                type="file"
+                accept="image/*"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all duration-200"
+                style="focus:ring-color: #00aff0;"
+            />
+            @error('profile_picture')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+        </div>
+
+        {{-- Image de bannière --}}
+        <div>
+            <label for="banner_image" class="block text-sm font-medium text-gray-700 mb-2">{{ __('Image de bannière') }}</label>
+            <input
+                id="banner_image"
+                name="banner_image"
+                type="file"
+                accept="image/*"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all duration-200"
+                style="focus:ring-color: #00aff0;"
+            />
+            @error('banner_image')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+        </div>
+
+        {{-- Prix d’abonnement --}}
+        <div>
+            <label for="subscription_price" class="block text-sm font-medium text-gray-700 mb-2">{{ __('Prix d’abonnement (€)') }}</label>
+            <input
+                id="subscription_price"
+                name="subscription_price"
+                type="number"
+                step="0.01"
+                min="0"
+                value="{{ old('subscription_price', $user->subscription_price) }}"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all duration-200"
+                style="focus:ring-color: #00aff0;"
+            />
+            @error('subscription_price')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+        </div>
+        @endif
+
         <div class="flex items-center gap-4 pt-4">
             <button 
                 type="submit"
                 class="px-6 py-3 rounded-lg font-medium text-white transition-all duration-200 hover:transform hover:scale-105"
                 style="background-color: #00aff0;"
-                onmouseover="this.style.backgroundColor='#0099d9';"
-                onmouseout="this.style.backgroundColor='#00aff0';"
             >
                 {{ __('Sauvegarder') }}
             </button>

@@ -32,6 +32,12 @@ Route::middleware('auth')->group(function () {
         ->name('user-profile.subscribe');
     Route::post('/profile/{creator}/unsubscribe', [UserProfileController::class, 'unsubscribe'])
         ->name('user-profile.unsubscribe');
+
+    Route::post('/creator/become', [App\Http\Controllers\CreatorController::class, 'become'])
+        ->name('creator.become');
+
+    Route::patch('/creator/remove', [App\Http\Controllers\CreatorController::class, 'remove'])
+        ->name('creator.remove');
 });
 
 require __DIR__ . '/auth.php';
@@ -40,5 +46,5 @@ Route::get('/parcourir', [App\Http\Controllers\CreatorController::class, 'index'
     ->name('browse');
 
 Route::get('/{username}', [UserProfileController::class, 'show'])
-     ->name('user-profile.show')
-     ->where('username', '[A-Za-z0-9._-]+');
+    ->name('user-profile.show')
+    ->where('username', '[A-Za-z0-9._-]+');

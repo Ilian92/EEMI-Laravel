@@ -17,7 +17,8 @@
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Quick Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                <!-- Mon Profil -->
                 <div class="bg-white p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 rounded-full flex items-center justify-center mr-4" style="background-color: #00aff0;">
@@ -32,6 +33,7 @@
                     </div>
                 </div>
 
+                <!-- Favoris -->
                 <div class="bg-white p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 rounded-full flex items-center justify-center mr-4" style="background-color: #00aff0;">
@@ -46,6 +48,7 @@
                     </div>
                 </div>
 
+                <!-- Abonnements -->
                 <div class="bg-white p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 rounded-full flex items-center justify-center mr-4" style="background-color: #00aff0;">
@@ -58,6 +61,28 @@
                             <p class="text-gray-600">Mes créateurs</p>
                         </div>
                     </div>
+                </div>
+
+                <!-- Toggle Creator Status -->
+                <div class="bg-white p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200">
+                    <form
+                      method="POST"
+                      action="{{ Auth::user()->is_creator ? route('creator.remove') : route('creator.become') }}"
+                    >
+                        @csrf
+                        @if(Auth::user()->is_creator)
+                            @method('patch')
+                            <button
+                              type="submit"
+                              class="w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all duration-200"
+                            >Ne plus être créateur</button>
+                        @else
+                            <button
+                              type="submit"
+                              class="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-all duration-200"
+                            >Devenir créateur</button>
+                        @endif
+                    </form>
                 </div>
             </div>
 
@@ -141,7 +166,7 @@
                     <h3 class="font-semibold text-gray-900">Explorer</h3>
                 </a>
 
-                <a href="#" class="text-center p-6 bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-all duration-200 hover:transform hover:scale-105">
+                <a href="/parcourir" class="text-center p-6 bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-all duration-200 hover:transform hover:scale-105">
                     <div class="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center" style="background-color: #00aff0;">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>

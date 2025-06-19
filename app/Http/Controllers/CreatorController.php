@@ -24,4 +24,26 @@ class CreatorController extends Controller
 
         return view('browse', compact('creators'));
     }
+
+    public function become()
+    {
+        $user = auth()->user();
+        $user->update([
+            'is_creator'    => true,
+            'creator_since' => now(),
+        ]);
+
+        return back()->with('success', 'Vous êtes maintenant créateur de contenu.');
+    }
+
+    public function remove()
+    {
+        $user = auth()->user();
+        $user->update([
+            'is_creator'    => false,
+            'creator_since' => null,
+        ]);
+
+        return back()->with('success', 'Vous n\'êtes plus créateur de contenu.');
+    }
 }
