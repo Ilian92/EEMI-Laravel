@@ -47,13 +47,14 @@ class UserProfileController extends Controller
             return back()->with('error', __('Vous êtes déjà abonné à ce créateur.'));
         }
 
-        // Simulation d'un abonnement
-        $user->subscriptions()->create([
-            'creator_id' => $creator->id,
-            'amount' => $creator->subscription_price,
-            'expires_at' => now()->addMonth(),
-            'is_active' => true,
-        ]);
+        $user->subscriptions()->updateOrCreate(
+            ['creator_id' => $creator->id],
+            [
+                'amount'     => $creator->subscription_price,
+                'expires_at' => now()->addMonth(),
+                'is_active'  => true,
+            ]
+        );
 
         return back()->with('success', __('Abonnement réussi !'));
     }

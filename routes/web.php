@@ -13,7 +13,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -44,6 +44,16 @@ require __DIR__ . '/auth.php';
 
 Route::get('/parcourir', [App\Http\Controllers\CreatorController::class, 'index'])
     ->name('browse');
+
+Route::get('/dashboard/abonnements', function () {
+    $subscriptions = auth()->user()
+        ->subscriptions()
+        ->with('creator')
+        ->paginate(10);
+
+    return view('dashboard.abonnements', compact('subscriptions'));
+})->middleware(['auth', 'verified'])
+    ->name('dashboard.subscriptions');
 
 Route::get('/{username}', [UserProfileController::class, 'show'])
     ->name('user-profile.show')
