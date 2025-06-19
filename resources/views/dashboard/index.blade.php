@@ -19,19 +19,19 @@
             <!-- Quick Stats -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
                 <!-- Mon Profil -->
-                <div class="bg-white p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200">
+                <a class="bg-white p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200" href="/profile">
                     <div class="flex items-center">
                         <div class="w-12 h-12 rounded-full flex items-center justify-center mr-4" style="background-color: #00aff0;">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                             </svg>
                         </div>
-                        <a href="/profile">
+                        <div>
                             <h3 class="text-lg font-semibold text-gray-900">Mon Profil</h3>
                             <p class="text-gray-600">Gérer mes informations</p>
-                        </a>
+                        </div>
                     </div>
-                </div>
+                </a>
 
                 <!-- Favoris -->
                 <div class="bg-white p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200">
@@ -49,7 +49,7 @@
                 </div>
 
                 <!-- Abonnements -->
-                <div class="bg-white p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200">
+                <a class="bg-white p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200" href="/dashboard/abonnements">
                     <div class="flex items-center">
                         <div class="w-12 h-12 rounded-full flex items-center justify-center mr-4" style="background-color: #00aff0;">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,7 +61,7 @@
                             <p class="text-gray-600">Mes créateurs</p>
                         </div>
                     </div>
-                </div>
+                </a>
 
                 <!-- Toggle Creator Status -->
                 <div class="bg-white p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200">
