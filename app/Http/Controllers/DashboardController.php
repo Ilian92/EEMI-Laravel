@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -29,23 +30,84 @@ class DashboardController extends Controller
     // Statistiques pour les créateurs : évolution mensuelle des abonnés et revenus
     public function stats()
     {
-        $user  = Auth::user();
+        $user = Auth::user();
         $start = Carbon::now()->subMonths(11)->startOfMonth();
-        $labels = $subsData = $revenueData = [];
+
+        // Données existantes
+        $labels = $subsData = $revenueData = $unsubsData = [];
 
         for ($i = 0; $i < 12; $i++) {
             $month = $start->copy()->addMonths($i);
-            $labels[]      = $month->format('M Y');
-            $subsData[]    = Subscription::where('creator_id', $user->id)
-                                ->whereYear('created_at', $month->year)
-                                ->whereMonth('created_at', $month->month)
-                                ->count();
-            $revenueData[] = (float) Subscription::where('creator_id', $user->id)
-                                ->whereYear('created_at', $month->year)
-                                ->whereMonth('created_at', $month->month)
-                                ->sum('amount');
+            $labels[] = $month->format('M Y');
+
+            $newSubs = Subscription::where('creator_id', $user->id)
+                ->whereYear('created_at', $month->year)
+                ->whereMonth('created_at', $month->month)
+                ->count();
+            $subsData[] = $newSubs;
+
+            $revenue = (float) Subscription::where('creator_id', $user->id)
+                ->whereYear('created_at', $month->year)
+                ->whereMonth('created_at', $month->month)
+                ->sum('amount');
+            $revenueData[] = $revenue;
+
+            $unsubs = Subscription::where('creator_id', $user->id)
+                ->whereYear('updated_at', $month->year)
+                ->whereMonth('updated_at', $month->month)
+                ->where('is_active', false)
+                ->count();
+            $unsubsData[] = $unsubs;
         }
 
-        return view('dashboard.stats', compact('labels','subsData','revenueData'));
+        // Nouvelles métriques
+        $totalSubscribers = Subscription::where('creator_id', $user->id)
+            ->where('is_active', true)
+            ->count();
+
+        $totalRevenue = Subscription::where('creator_id', $user->id)->sum('amount');
+
+        $monthlyRevenue = Subscription::where('creator_id', $user->id)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->sum('amount');
+
+        $avgRevenue = $totalSubscribers > 0 ? $totalRevenue / $totalSubscribers : 0;
+
+        $retentionRate = $totalSubscribers > 0 ?
+            (Subscription::where('creator_id', $user->id)
+                ->where('is_active', true)
+                ->where('created_at', '<', Carbon::now()->subMonth())
+                ->count() / $totalSubscribers) * 100 : 0;
+
+        $lastMonthSubs = Subscription::where('creator_id', $user->id)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+        $thisMonthSubs = Subscription::where('creator_id', $user->id)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+        $growthRate = $lastMonthSubs > 0 ?
+            (($thisMonthSubs - $lastMonthSubs) / $lastMonthSubs) * 100 : 0;
+
+        $topMonths = collect($labels)
+            ->zip($subsData)
+            ->map(fn($item) => ['month' => $item[0], 'count' => $item[1]])
+            ->sortByDesc('count')
+            ->take(3)
+            ->values();
+
+        return view('dashboard.stats', compact(
+            'labels',
+            'subsData',
+            'revenueData',
+            'unsubsData',
+            'totalSubscribers',
+            'totalRevenue',
+            'monthlyRevenue',
+            'avgRevenue',
+            'retentionRate',
+            'growthRate',
+            'topMonths'
+        ));
     }
 }
