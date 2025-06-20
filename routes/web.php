@@ -6,6 +6,7 @@ use App\Http\Controllers\TodoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\BrowseController;
+use Illuminate\Support\Facades\Auth;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {
@@ -43,6 +44,10 @@ Route::middleware('auth')->group(function () {
 
     Route::patch('/creator/remove', [App\Http\Controllers\CreatorController::class, 'remove'])
         ->name('creator.remove');
+
+    Route::get('/dashboard/stats', [App\Http\Controllers\StatsController::class, 'index'])
+        ->middleware('can:isCreator')
+        ->name('dashboard.stats');
 });
 
 require __DIR__ . '/auth.php';
@@ -51,7 +56,7 @@ Route::get('/parcourir', [App\Http\Controllers\CreatorController::class, 'index'
     ->name('browse');
 
 Route::get('/dashboard/abonnements', function () {
-    $subscriptions = auth()->user()
+    $subscriptions = Auth::user()
         ->subscriptions()
         ->with('creator')
         ->paginate(10);

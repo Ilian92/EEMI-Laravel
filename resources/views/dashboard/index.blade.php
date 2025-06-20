@@ -193,6 +193,14 @@
                     </div>
                     <h3 class="font-semibold text-gray-900">Support</h3>
                 </a>
+
+                <!-- New Stats Card -->
+                <a href="{{ route('dashboard.stats') }}" class="text-center p-6 bg-white rounded-lg border border-gray-200 hover:shadow-lg">
+                    <div class="flex items-center justify-center mb-2">
+                        <!-- icône graph -->
+                    </div>
+                    <h3 class="font-semibold">Statistiques</h3>
+                </a>
             </div>
         </div>
     </section>
