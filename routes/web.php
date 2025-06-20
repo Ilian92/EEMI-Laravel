@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\BrowseController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\DashboardController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {
@@ -14,11 +15,10 @@ Route::middleware('guest')->group(function () {
     })->name('homepage');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard.index');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware('auth', 'verified')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
 
-Route::middleware('auth')->group(function () {
     Route::get('/todo', [TodoController::class, 'index'])->name('todo.index');
     Route::post('/todo', [TodoController::class, 'add'])->name('todo.add');
     Route::delete('/todo/{todo}', [TodoController::class, 'delete'])->name('todo.delete');
@@ -45,7 +45,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/creator/remove', [App\Http\Controllers\CreatorController::class, 'remove'])
         ->name('creator.remove');
 
-    Route::get('/dashboard/stats', [App\Http\Controllers\StatsController::class, 'index'])
+    Route::get('/dashboard/abonnements', [DashboardController::class, 'subscriptions'])
+        ->name('dashboard.subscriptions');
+
+    Route::get('/dashboard/stats', [DashboardController::class, 'stats'])
         ->middleware('can:isCreator')
         ->name('dashboard.stats');
 });
@@ -54,16 +57,6 @@ require __DIR__ . '/auth.php';
 
 Route::get('/parcourir', [App\Http\Controllers\CreatorController::class, 'index'])
     ->name('browse');
-
-Route::get('/dashboard/abonnements', function () {
-    $subscriptions = Auth::user()
-        ->subscriptions()
-        ->with('creator')
-        ->paginate(10);
-
-    return view('dashboard.abonnements', compact('subscriptions'));
-})->middleware(['auth', 'verified'])
-    ->name('dashboard.subscriptions');
 
 Route::get('/{username}', [UserProfileController::class, 'show'])
     ->name('user-profile.show')
