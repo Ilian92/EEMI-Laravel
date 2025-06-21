@@ -8,12 +8,9 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\BrowseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomepageController;
 
-Route::middleware('guest')->group(function () {
-    Route::get('/', function () {
-        return view('homepage');
-    })->name('homepage');
-});
+Route::get('/', [HomepageController::class, 'index'])->name('homepage');
 
 Route::middleware('auth', 'verified')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])

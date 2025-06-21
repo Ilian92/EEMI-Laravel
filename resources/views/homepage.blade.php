@@ -132,24 +132,19 @@
     </section>
 
     <!-- Stats Section -->
-    {{-- todo: Modifier cette section avec des vrais stats dès que possible --}}
     <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                 <div>
-                    <div class="text-3xl md:text-4xl font-bold mb-2" style="color: #00aff0;">10K+</div>
+                    <div class="text-3xl md:text-4xl font-bold mb-2" style="color: #00aff0;">{{ number_format($totalMembers) }}+</div>
                     <div class="text-gray-600">Membres actifs</div>
                 </div>
                 <div>
-                    <div class="text-3xl md:text-4xl font-bold mb-2" style="color: #00aff0;">500+</div>
+                    <div class="text-3xl md:text-4xl font-bold mb-2" style="color: #00aff0;">{{ number_format($totalCreators) }}+</div>
                     <div class="text-gray-600">Créateurs</div>
                 </div>
                 <div>
-                    <div class="text-3xl md:text-4xl font-bold mb-2" style="color: #00aff0;">50K+</div>
-                    <div class="text-gray-600">Contenus premium</div>
-                </div>
-                <div>
-                    <div class="text-3xl md:text-4xl font-bold mb-2" style="color: #00aff0;">98%</div>
+                    <div class="text-3xl md:text-4xl font-bold mb-2" style="color: #00aff0;">{{ $satisfactionRate }}%</div>
                     <div class="text-gray-600">Satisfaction</div>
                 </div>
             </div>
