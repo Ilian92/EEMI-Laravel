@@ -7,11 +7,6 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function create()
-    {
-        return view('posts.create');
-    }
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -26,13 +21,18 @@ class PostController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            // Convert image to base64 like in seeder
-            $imageContent = file_get_contents($request->file('image')->path());
-            $post->image = base64_encode($imageContent);
+            $imagePath = $request->file('image')->store('posts', 'public');
+            $post->image_path = $imagePath;
         }
 
         $post->save();
 
-        return redirect()->route('dashboard')->with('success', 'Post créé avec succès');
+        return redirect()->route('posts.index')->with('success', 'Post créé avec succès');
+    }
+
+    public function index()
+    {
+        $posts = Post::all(); // Récupère tous les posts
+        return view('posts.index', compact('posts')); // Retourne la vue avec les posts
     }
 }

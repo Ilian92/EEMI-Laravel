@@ -2,31 +2,27 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 use Faker\Factory;
 
-class PostsSeeder extends Seeder
+class PostSeeder extends Seeder
 {
     public function run(): void
     {
         $faker = Factory::create('fr_FR');
 
-        // Make sure we have at least one user
+        // Get or create a user
         $user = User::first() ?? User::factory()->create();
 
-        // Create 5 fake posts
+        // Create 5 posts
         for ($i = 0; $i < 5; $i++) {
-            // Generate a random image and encode it in base64
-            $imageContent = file_get_contents($faker->image(null, 640, 480, null, true));
-            $base64Image = base64_encode($imageContent);
-
             Post::create([
-                'content' => $faker->paragraph(2),
                 'user_id' => $user->id,
+                'content' => $faker->realText(200),
                 'is_published' => 1,
-                'image' => $base64Image,
+                'image_path' => 'posts/Zh4JFq18xxLFC98NeJNBBkL1Ja6tVdqE4u8mp8Wu.png',
                 'created_at' => $faker->dateTimeBetween('-1 month', 'now'),
                 'updated_at' => now(),
             ]);

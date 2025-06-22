@@ -23,10 +23,6 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/todo/{todo}/update', [TodoController::class, 'updateform'])->name('todo.updateform');
     Route::post('/todo/{todo}/update', [TodoController::class, 'update'])->name('todo.update');
 
-    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
-
-
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -48,6 +44,9 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/dashboard/stats', [DashboardController::class, 'stats'])
         ->middleware('can:isCreator')
         ->name('dashboard.stats');
+
+    Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 });
 
 require __DIR__ . '/auth.php';
