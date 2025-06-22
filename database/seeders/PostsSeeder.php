@@ -18,11 +18,15 @@ class PostsSeeder extends Seeder
 
         // Create 5 fake posts
         for ($i = 0; $i < 5; $i++) {
+            // Generate a random image and encode it in base64
+            $imageContent = file_get_contents($faker->image(null, 640, 480, null, true));
+            $base64Image = base64_encode($imageContent);
+
             Post::create([
                 'content' => $faker->paragraph(2),
                 'user_id' => $user->id,
                 'is_published' => 1,
-                'image_path' => NULL,
+                'image' => $base64Image,
                 'created_at' => $faker->dateTimeBetween('-1 month', 'now'),
                 'updated_at' => now(),
             ]);

@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->bigInteger('user_id')->unsigned();
             $table->text('content');
-            $table->string('image_path')->nullable();
+            $table->string('image')->nullable();
             $table->boolean('is_published')->default(true);
             $table->timestamps();
 

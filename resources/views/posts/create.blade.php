@@ -25,7 +25,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('posts.store') }}" method="POST" class="space-y-6">
+                <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                     @csrf
 
                     <div>
@@ -35,17 +35,32 @@
                         <div class="mt-1">
                             <textarea id="content" name="content" rows="4"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                placeholder="Que voulez-vous partager ?">{{ old('content') }}</textarea>
+                                placeholder="Que bite-vous partager ?">{{ old('content') }}</textarea>
                         </div>
+                    </div>
+
+                    <div>
+                        <label for="image" class="block text-sm font-medium text-gray-700">
+                            Image
+                        </label>
+                        <div class="mt-1">
+                            <input type="file" id="image" name="image" accept="image/*" class="block w-full text-sm text-slate-500
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-md file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-indigo-50 file:text-indigo-700
+                                    hover:file:bg-indigo-100">
+                        </div>
+                        <p class="mt-1 text-sm text-gray-500">PNG, JPG ou GIF (max. 2MB)</p>
                     </div>
 
                     <div class="flex items-center space-x-4 justify-end">
                         <a href="{{ route('dashboard') }}"
-                            class="bg-gray-200 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mr-3">
+                            class="bg-gray-200 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                             Annuler
                         </a>
                         <button type="submit"
-                            class="bg-gray-200 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mr-3">
+                            class="bg-indigo-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Publier
                         </button>
                     </div>
