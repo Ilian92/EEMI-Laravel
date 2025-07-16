@@ -19,7 +19,7 @@
             <!-- Posts List -->
             <div class="mt-8">
                 <h2 class="text-3xl font-bold text-gray-900 mb-6">Liste des posts</h2>
-                @foreach ($posts->reverse() as $post)
+                @foreach ($posts as $post)
                     <div class="bg-white rounded-lg shadow-md p-6 mt-4">
                         <p class="text-sm font-semibold text-gray-800">{{ $post->user->name }}</p>
                         <p class="text-sm text-gray-700">{{ $post->content }}</p>

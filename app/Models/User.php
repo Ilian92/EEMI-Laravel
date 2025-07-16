@@ -84,4 +84,10 @@ class User extends Authenticatable
     {
         return $this->banner_image ? asset('storage/' . $this->banner_image) : asset('images/default-banner.jpg');
     }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
 }
