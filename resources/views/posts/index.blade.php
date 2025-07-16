@@ -25,8 +25,6 @@
                         <p class="text-sm text-gray-700">{{ $post->content }}</p>
                         @if ($post->image_path)
                             <img src="{{ asset("storage/{$post->image_path}") }}" alt="Image du post" class="mt-4 max-w-full">
-                        @else
-                            <img src="{{ asset('images/default.png') }}" alt="Image par défaut" class="mt-4 max-w-full">
                         @endif
                         <p class="text-xs text-gray-500 mt-4">{{ $post->created_at->format('d/m/Y à H:i') }}
                         </p>
