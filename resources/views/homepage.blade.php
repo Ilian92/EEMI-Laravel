@@ -101,7 +101,8 @@
     </section>
 
     <!-- Discover Posts from Top Creators -->
-    <section class="py-20 bg-white">
+    <section class="bg-gradient-to-br from-blue-100 to-indigo-100 py-20">
+
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -111,37 +112,35 @@
                     Reste à jour avec les dernières publications des créateurs les plus populaires.
                 </p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                @foreach ($topCreators as $creator)
-                    <div class="bg-white rounded-lg shadow p-6">
-                        <div class="flex items-center mb-4">
-                            <img src="{{ $creator->avatar_url ?? '/default-avatar.jpg' }}" alt="{{ $creator->name }}"
-                                class="w-20 h-20 rounded-full object-cover mr-4">
-                            <div>
-                                <h3 class="text-xl font-semibold text-gray-900">{{ $creator->name }}</h3>
-                                <p class="text-gray-600">{{ '@' . $creator->username }} — <span
-                                        class="font-medium">{{ $creator->subscribers_count }}</span> abonnés</p>
-                            </div>
-                        </div>
-
-
+            @foreach ($topCreators as $creator)
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-16">
+                    <div class="flex items-center mb-4">
+                        <img src="{{ $creator->avatar_url ?? '/default-avatar.jpg' }}" alt="{{ $creator->name }}"
+                            class="w-20 h-20 rounded-full object-cover mr-4">
                         <div>
-                            @foreach ($creator->posts as $post)
-                                <div class="mb-4">
-                                    <p class="text-gray-700 text-sm mb-1">
-                                        {{ Str::limit(strip_tags($post->content), 100) }}
-                                    </p>
-                                    @if ($post->image_url)
-                                        <img src="{{ $post->image_url }}" alt="Image du post"
-                                            class="w-full h-24 object-cover rounded-md py-8 mx-auto" style="filter: blur(20px);">
-                                    @endif
-                                    <small class="text-gray-400 text-xs">{{ $post->created_at->format('d/m/Y') }}</small>
-                                </div>
-                            @endforeach
+                            <h3 class="text-xl font-semibold text-gray-900">{{ $creator->name }}</h3>
+                            <p class="text-gray-600">{{ '@' . $creator->username }} — <span
+                                    class="font-medium">{{ $creator->subscribers_count }}</span> abonnés</p>
                         </div>
                     </div>
-                @endforeach
-            </div>
+
+
+                    <div>
+                        @foreach ($creator->posts as $post)
+                            <div class="mb-4">
+                                <p class="text-gray-700 text-sm mb-1">
+                                    {{ Str::limit(strip_tags($post->content), 100) }}
+                                </p>
+                                @if ($post->image_url)
+                                    <img src="{{ $post->image_url }}" alt="Image du post"
+                                        class="size-full object-cover rounded-md mb-3 py-8" style="filter: blur(20px);">
+                                @endif
+                                <small class="text-gray-400 text-xs">{{ $post->created_at->format('d/m/Y') }}</small>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
         </div>
     </section>
 
