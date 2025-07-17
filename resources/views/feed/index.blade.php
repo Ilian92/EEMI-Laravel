@@ -7,10 +7,45 @@
                 <div class="flex items-center mb-4">
                     <img src="{{ $creator->avatar_url ?? '/default-avatar.jpg' }}" alt="{{ $creator->name }}"
                         class="w-20 h-20 rounded-full object-cover mr-4">
-                    <div>
-                        <h3 class="text-xl font-semibold text-gray-900">{{ $creator->name }}</h3>
-                        <p class="text-gray-600">{{ '@' . $creator->username }} — <span
-                                class="font-medium">{{ $creator->posts->count() }}</span> posts récents</p>
+                    <div class="flex items-center justify-between w-full">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">{{ $creator->name }}</h3>
+                            <p class="text-gray-600">{{ '@' . $creator->username }} — <span
+                                    class="font-medium">{{ $creator->subscribers()->where('is_active', true)->count() }}</span>
+                                abonnés</p>
+                        </div>
+
+                        @auth
+                            @if(auth()->id() !== $creator->id)
+                                @php
+                                    $isSubscribed = auth()->user()->isSubscribedTo($creator);
+                                @endphp
+
+                                @if($isSubscribed)
+                                    <form method="POST" action="{{ route('user-profile.unsubscribe', $creator->id) }}">
+                                        @csrf
+                                        <button type="submit"
+                                            class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                                            Se désabonner
+                                        </button>
+                                    </form>
+                                @else
+                                    <form method="POST" action="{{ route('user-profile.subscribe', $creator->id) }}">
+                                        @csrf
+                                        <button type="submit"
+                                            class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                                            S'abonner
+                                        </button>
+                                    </form>
+                                @endif
+                            @endif
+                        @else
+                            <a href="{{ route('login') }}"
+                                class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                                Connexion pour s'abonner
+                            </a>
+                        @endauth
+
                     </div>
                 </div>
 
@@ -30,5 +65,6 @@
                 </div>
             </div>
         @endforeach
+
     </section>
 </x-layout>
