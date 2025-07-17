@@ -9,6 +9,7 @@ use App\Http\Controllers\BrowseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\FeedController;
 
 Route::get('/', [HomepageController::class, 'index'])->name('homepage');
 
@@ -49,6 +50,8 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
     Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+
+    Route::get('/feed', [FeedController::class, 'index'])->name('feed.index');
 
 
 });
