@@ -24,10 +24,13 @@ class UserProfileController extends Controller
 
         $subscribersCount = $user->subscribers()->where('is_active', true)->count();
 
+        $posts = $user->posts()->orderBy('created_at', 'desc')->get();
+
         return view('user-profile.show', compact(
             'user',
             'isSubscribed',
-            'subscribersCount'
+            'subscribersCount',
+            'posts'
         ));
     }
 
@@ -50,13 +53,16 @@ class UserProfileController extends Controller
         $user->subscriptions()->updateOrCreate(
             ['creator_id' => $creator->id],
             [
-                'amount'     => $creator->subscription_price,
+                'amount' => $creator->subscription_price,
                 'expires_at' => now()->addMonth(),
-                'is_active'  => true,
+                'is_active' => true,
             ]
         );
 
-        return back()->with('success', __('Abonnement réussi !'));
+        // return back()->with('success', __('Abonnement réussi !'));
+        return redirect()->route('user-profile.show', ['username' => $creator->username])
+            ->with('success', __('Abonnement réussi !'));
+
     }
 
     public function unsubscribe(User $creator)
