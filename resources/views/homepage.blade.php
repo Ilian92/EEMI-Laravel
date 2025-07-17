@@ -132,8 +132,8 @@
                                     {{ Str::limit(strip_tags($post->content), 100) }}
                                 </p>
                                 @if ($post->image_url)
-                                    <img src="{{ $post->image_url }}" alt="Image du post"
-                                        class="size-full object-cover rounded-md mb-3 py-8" style="filter: blur(20px);">
+                                    <img src="{{ $post->image_url }}" alt="Image du post" class="w-full rounded mb-2"
+                                        @if(!$isSubscribed) style="filter: blur(20px);" @endif />
                                 @endif
                                 <small class="text-gray-400 text-xs">{{ $post->created_at->format('d/m/Y') }}</small>
                             </div>

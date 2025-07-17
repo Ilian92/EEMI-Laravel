@@ -38,11 +38,17 @@ class HomepageController extends Controller
             ->take(3)
             ->get();
 
+        $isSubscribed = false;
+        if (Auth::check()) {
+            $isSubscribed = Auth::user()->isSubscribedTo($user);
+        }
+
         return view('homepage', compact(
             'totalMembers',
             'totalCreators',
             'satisfactionRate',
-            'topCreators'
+            'topCreators',
+            'isSubscribed',
         ));
     }
 
