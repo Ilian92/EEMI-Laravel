@@ -20,7 +20,7 @@ class CreatorSeeder extends Seeder
             ->each(function ($creator) {
                 // Pour chacun, génère entre 0 et 100 abonnements
                 Subscription::factory()
-                    ->count(rand(0, 100))
+                    ->count(rand(0, 10))
                     ->state(['creator_id' => $creator->id])
                     ->create();
             });

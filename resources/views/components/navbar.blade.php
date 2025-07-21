@@ -16,41 +16,14 @@
                 <!-- Menu de navigation -->
                 <div class="flex items-center space-x-6">
                     @auth
+                        <button x-data="" @click="$dispatch('open-modal', 'create-post')"
+                            class="px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:bg-opacity-10"
+                            style="color: #00aff0; border: 2px solid #00aff0;">
+                            Créer un post
+                        </button>
 
-                        @auth
-                            <button x-data="" @click="$dispatch('open-modal', 'create-post')"
-                                class="px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:bg-opacity-10"
-                                style="color: #00aff0; border: 2px solid #00aff0;">
-                                Créer un post
-                            </button>
+                        <x-create-post-modal />
 
-                            <x-modal name="create-post" :show="false">
-                                <div class="p-6">
-                                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                        Créer un nouveau post
-                                    </h2>
-
-                                    <form action="{{ route('posts.store') }}" method="POST" class="mt-6">
-                                        @csrf
-                                        <div>
-                                            <textarea name="content" rows="4"
-                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                                placeholder="Que voulez-vous partager ?"></textarea>
-                                        </div>
-
-                                        <div class="mt-6 flex justify-end">
-                                            <x-secondary-button x-on:click="$dispatch('close-modal', 'create-post')">
-                                                Annuler
-                                            </x-secondary-button>
-
-                                            <x-primary-button class="ml-3">
-                                                Publier
-                                            </x-primary-button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </x-modal>
-                        @endauth
                         <a href="{{ url('/dashboard') }}"
                             class="px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:bg-opacity-10"
                             style="color: #00aff0; border: 2px solid #00aff0;"
