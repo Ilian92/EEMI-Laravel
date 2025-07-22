@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\GuessController;
 
 Route::get('/', [HomepageController::class, 'index'])->name('homepage');
 
@@ -58,9 +59,15 @@ Route::middleware('auth', 'verified')->group(function () {
 
 require __DIR__ . '/auth.php';
 
+
+Route::post('/guess', [GuessController::class, 'submit'])->name('guess.submit');
+Route::get('/guess', [GuessController::class, 'index'])->name('guess.index');
+Route::get('/guess/result', [GuessController::class, 'result'])->name('guess.result');
+
 Route::get('/parcourir', [App\Http\Controllers\CreatorController::class, 'index'])
     ->name('browse');
 
 Route::get('/{username}', [UserProfileController::class, 'show'])
     ->name('user-profile.show')
     ->where('username', '[A-Za-z0-9._-]+');
+
