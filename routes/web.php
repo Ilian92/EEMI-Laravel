@@ -54,15 +54,22 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::get('/feed', [FeedController::class, 'index'])->name('feed.index');
 
+    Route::post('/guess', [GuessController::class, 'submit'])->name('guess.submit');
+    Route::get('/guess', [GuessController::class, 'index'])->name('guess.index');
+    Route::post('/guess/reset-score', [GuessController::class, 'resetScore'])->name('guess.reset-score');
+    Route::get('/test-reset', function () {
+        dd('Route de test atteinte !');
+    });
+
+    Route::post('/test-reset-post', function () {
+        dd('Route POST de test atteinte !');
+    });
+
 
 });
 
 require __DIR__ . '/auth.php';
 
-
-Route::post('/guess', [GuessController::class, 'submit'])->name('guess.submit');
-Route::get('/guess', [GuessController::class, 'index'])->name('guess.index');
-Route::get('/guess/result', [GuessController::class, 'result'])->name('guess.result');
 
 Route::get('/parcourir', [App\Http\Controllers\CreatorController::class, 'index'])
     ->name('browse');

@@ -7,7 +7,7 @@
                     🦶 <span style="color: #00aff0;">Guess My Feet!</span> 🦶
                 </h1>
                 <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                    Testez vos connaissances ! Saurez-vous deviner à qui appartiennent ces pieds ?
+                    Testez vos connaissances ! Êtes-vous un vrai kiffeur (de pieds) ?
                 </p>
             </div>
         </div>
@@ -31,6 +31,68 @@
                 </div>
             @endif
 
+            @if(session('show_result'))
+                <div class="result-container mb-8">
+                    <!-- Bouton Reset Score (une seule fois) -->
+                    <div class="mb-6 text-center">
+                        <form action="{{ route('guess.reset-score') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit"
+                                    class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                                    onclick="return confirm('⚠️ Voulez-vous vraiment remettre votre score à zéro ?')">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                </svg>
+                                Reset Score
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Résultat du jeu -->
+                    @if(session('success'))
+                        <div class="p-6 bg-green-50 border-l-4 border-green-400 rounded-lg">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-6 w-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-green-700 font-medium">
+                                        {{ session('victory_message') }}
+                                    </p>
+                                    <div class="mt-2 text-sm text-green-600">
+                                        <strong>Score : {{ $score ?? 0 }} / {{ $totalGames ?? 0 }}</strong>
+                                        <br>
+                                        Pourcentage de réussite : {{ ($totalGames ?? 0) > 0 ? round((($score ?? 0) / $totalGames) * 100) : 0 }}%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <div class="p-6 bg-red-50 border-l-4 border-red-400 rounded-lg">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-6 w-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-red-700 font-medium">
+                                        {{ session('defeat_message') }}
+                                    </p>
+                                    <div class="mt-2 text-sm text-red-600">
+                                        <strong>Score : {{ $score ?? 0 }} / {{ $totalGames ?? 0 }}</strong>
+                                        <br>
+                                        La bonne réponse était : <strong>{{ session('correctPerson')->name ?? 'Inconnu' }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('guess.submit') }}" class="space-y-8">
                 @csrf
 
@@ -48,21 +110,16 @@
                 <!-- Choix multiples -->
                 <div class="grid md:grid-cols-3 gap-6">
                     @foreach($choices as $person)
-                        <div class="choice-card bg-white rounded-xl border-2 border-gray-200 p-6 text-center cursor-pointer transition-all duration-200 hover:border-blue-300 hover:shadow-lg hover:transform hover:scale-105"
-                             data-person-id="{{ $person->id }}">
+                        <div class="bg-white rounded-xl border-2 border-gray-200 p-6 text-center">
                             <div class="mb-4">
                                 <img src="{{ $person->face_photo_url }}" alt="{{ $person->name }}"
                                     class="w-24 h-24 mx-auto rounded-full object-cover border-4 border-gray-100 shadow-md">
                             </div>
                             <h3 class="text-xl font-semibold text-gray-900 mb-3">{{ $person->name }}</h3>
                             <div class="flex items-center justify-center">
-                                <input class="sr-only" type="radio" name="selected_person_id"
+                                <input type="radio" name="selected_person_id"
                                     value="{{ $person->id }}" id="person{{ $person->id }}" required>
-                                <div class="radio-custom w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center">
-                                    <div class="radio-dot w-2.5 h-2.5 rounded-full opacity-0 transition-opacity duration-200"
-                                         style="background-color: #00aff0;"></div>
-                                </div>
-                                <label class="ml-2 text-gray-700 font-medium cursor-pointer" for="person{{ $person->id }}">
+                                <label class="ml-2 text-gray-700 font-medium" for="person{{ $person->id }}">
                                     Choisir
                                 </label>
                             </div>
@@ -73,7 +130,7 @@
                 <input type="hidden" name="correct_person_id" value="{{ $correctPerson->id }}">
 
                 <div class="text-center">
-                    <button type="submit" 
+                <button type="submit" 
                             class="px-12 py-4 rounded-lg font-semibold text-white text-xl transition-all duration-200 hover:transform hover:scale-105 shadow-lg"
                             style="background-color: #00aff0;" 
                             onmouseover="this.style.backgroundColor='#0099d9';"
@@ -85,44 +142,5 @@
         </div>
     </section>
 
-    <style>
-        .choice-card.selected {
-            border-color: #00aff0 !important;
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-            box-shadow: 0 10px 25px rgba(0, 175, 240, 0.15);
-        }
 
-        .choice-card.selected .radio-custom {
-            border-color: #00aff0;
-            background-color: #00aff0;
-        }
-
-        .choice-card.selected .radio-dot {
-            opacity: 1;
-            background-color: white !important;
-        }
-
-        .choice-card.selected h3 {
-            color: #00aff0;
-        }
-
-        .choice-card:hover .radio-custom {
-            border-color: #00aff0;
-        }
-    </style>
-
-    <script>
-        // Permettre de cliquer sur la carte entière pour sélectionner
-        document.querySelectorAll('.choice-card').forEach(card => {
-            card.addEventListener('click', function () {
-                const radio = this.querySelector('input[type="radio"]');
-                radio.checked = true;
-
-                // Retirer la classe selected de tous les cards
-                document.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
-                // Ajouter la classe au card sélectionné
-                this.classList.add('selected');
-            });
-        });
-    </script>
 </x-layout>

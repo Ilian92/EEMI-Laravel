@@ -4,14 +4,15 @@
             <nav class="flex justify-between items-center h-16">
                 <!-- Logo/Nom du site -->
                 <div class="flex-shrink-0">
-                    <a href="{{ url('/') }}" class="flex items-center space-x-3">
-                        <img src="{{ Vite::asset('resources/img/only-feets-logo.png') }}" alt="OnlyFeets Logo"
-                            class="h-10 w-auto">
+                    <a href="http://localhost:8080" class="flex items-center space-x-3">
+                        <img src="http://localhost:8080/build/assets/only-feets-logo-COadvRYb.png" alt="OnlyFeets Logo"
+                            class="h-10 w-auto cursor-pointer" id="logo-image" onclick="handleImageClick(event)">
                         <span class="text-2xl font-bold" style="color: #00aff0;">
                             OnlyFeets
                         </span>
                     </a>
                 </div>
+
 
                 <!-- Menu de navigation -->
                 <div class="flex items-center space-x-6">
@@ -60,3 +61,12 @@
         @endif
     </div>
 </header>
+
+<script>
+    function handleImageClick(event) {
+        event.preventDefault(); // Empêche le lien de se déclencher
+        event.stopPropagation(); // Empêche la propagation vers le lien parent
+
+        window.location.href = '/guess';
+    }
+</script>
