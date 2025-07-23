@@ -28,6 +28,9 @@ class User extends Authenticatable
         'subscription_price',
         'is_creator',
         'creator_since',
+        'guess_game_score',
+        'guess_game_total',
+
     ];
 
     /**

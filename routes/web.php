@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\GuessController;
 
 Route::get('/', [HomepageController::class, 'index'])->name('homepage');
 
@@ -53,10 +54,22 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::get('/feed', [FeedController::class, 'index'])->name('feed.index');
 
+    Route::post('/guess', [GuessController::class, 'submit'])->name('guess.submit');
+    Route::get('/guess', [GuessController::class, 'index'])->name('guess.index');
+    Route::post('/guess/reset-score', [GuessController::class, 'resetScore'])->name('guess.reset-score');
+    Route::get('/test-reset', function () {
+        dd('Route de test atteinte !');
+    });
+
+    Route::post('/test-reset-post', function () {
+        dd('Route POST de test atteinte !');
+    });
+
 
 });
 
 require __DIR__ . '/auth.php';
+
 
 Route::get('/parcourir', [App\Http\Controllers\CreatorController::class, 'index'])
     ->name('browse');
@@ -64,3 +77,4 @@ Route::get('/parcourir', [App\Http\Controllers\CreatorController::class, 'index'
 Route::get('/{username}', [UserProfileController::class, 'show'])
     ->name('user-profile.show')
     ->where('username', '[A-Za-z0-9._-]+');
+
