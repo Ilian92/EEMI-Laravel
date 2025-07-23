@@ -128,7 +128,7 @@
 
                             @if ($post->image_url)
                                 <img src="{{ $post->image_url }}" alt="Image du post" class="w-full rounded mb-2"
-                                    @if(!$isSubscribed) style="filter: blur(20px);" @endif />
+                                @if(!$isSubscribed && $user->id !== auth()->id()) style="filter: blur(20px);" @endif />
                             @endif
 
                             <small class="text-gray-500 text-xs">{{ $post->created_at->format('d/m/Y H:i') }}</small>

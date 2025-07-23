@@ -104,13 +104,13 @@
                         meilleurs créateurs.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#"
+                        <a href="/feed"
                             class="px-6 py-3 rounded-lg font-medium text-white transition-all duration-200 hover:transform hover:scale-105"
                             style="background-color: #00aff0;" onmouseover="this.style.backgroundColor='#0099d9';"
                             onmouseout="this.style.backgroundColor='#00aff0';">
                             Explorer
                         </a>
-                        <a href="#"
+                        <a href="/{{ Auth::user()->username }}"
                             class="px-6 py-3 rounded-lg font-medium text-gray-700 border-2 border-gray-300 hover:border-gray-400 transition-all duration-200">
                             Mon Profil
                         </a>
