@@ -28,6 +28,9 @@ class User extends Authenticatable
         'subscription_price',
         'is_creator',
         'creator_since',
+        'guess_game_score',
+        'guess_game_total',
+
     ];
 
     /**
@@ -84,4 +87,10 @@ class User extends Authenticatable
     {
         return $this->banner_image ? asset('storage/' . $this->banner_image) : asset('images/default-banner.jpg');
     }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
 }
