@@ -44,7 +44,6 @@ class PostController extends Controller
 
     public function update(Request $request, Post $post)
     {
-        // Vérifier que l'utilisateur peut modifier ce post
         if ($post->user_id !== auth()->id()) {
             abort(403);
         }
@@ -57,10 +56,8 @@ class PostController extends Controller
         $imagePath = $post->image_path;
 
         if ($request->hasFile('image')) {
-            // Supprimer l'ancienne image
             $post->deleteImage();
 
-            // Sauvegarder la nouvelle image
             $image = $request->file('image');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $imagePath = $image->storeAs('posts', $imageName, 'public');
@@ -76,15 +73,10 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        // Vérifier que l'utilisateur peut supprimer ce post
         if ($post->user_id !== auth()->id()) {
             abort(403);
         }
-
-        // Supprimer l'image associée
         $post->deleteImage();
-
-        // Supprimer le post
         $post->delete();
 
         return redirect()->route('posts.index')->with('success', 'Post supprimé avec succès');

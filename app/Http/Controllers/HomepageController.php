@@ -26,7 +26,6 @@ class HomepageController extends Controller
         $satisfactionRate = $totalSubscriptions > 0 ?
             round(($activeSubscriptions / $totalSubscriptions) * 100) : 98;
 
-        // Top 5 créateurs avec nombre d'abonnés et leurs 3 derniers posts
         $topCreators = User::where('is_creator', true)
             ->withCount('subscribers')
             ->with([

@@ -8,16 +8,18 @@ use Illuminate\Support\Facades\Auth;
 
 class TodoController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $todos = Todo::all();
         return view('todo.index', [
-           'todoCount' => Todo::count(),
+            'todoCount' => Todo::count(),
             'todos' => $todos,
             'user' => Auth::user()
         ]);
     }
 
-    public function add(Request $request){
+    public function add(Request $request)
+    {
         $validated = $request->validate([
             'name' => 'required|min:3'
         ]);
@@ -28,31 +30,34 @@ class TodoController extends Controller
         return redirect()->back();
     }
 
-    public function delete(Todo $todo){
+    public function delete(Todo $todo)
+    {
         $todo->delete();
         return redirect()->back();
     }
 
-    public function view(Todo $todo){
-        return view('todo.view',[
+    public function view(Todo $todo)
+    {
+        return view('todo.view', [
             'todo' => $todo
         ]);
     }
 
-    public function updateform(Todo $todo){
-        return view('todo.form',[
-           'todo' => $todo
+    public function updateform(Todo $todo)
+    {
+        return view('todo.form', [
+            'todo' => $todo
         ]);
     }
 
-    public function update(Todo $todo, Request $request){
+    public function update(Todo $todo, Request $request)
+    {
         $validated = $request->validate([
             'name' => 'required|min:3'
         ]);
         $todo->name = $validated['name'];
         $todo->save();
 
-       // $todo->update($validated);
         return redirect()->back();
     }
 }

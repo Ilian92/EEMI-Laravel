@@ -12,7 +12,7 @@ class CreatorController extends Controller
         $search = $request->query('search');
 
         $query = User::where('is_creator', true)
-            ->withCount('subscribers') // compte le nombre d’abonnés
+            ->withCount('subscribers')
             ->when($search, fn($q) => $q->where('name', 'like', "%{$search}%"))
             ->orderByDesc('subscribers_count');
 
@@ -29,7 +29,7 @@ class CreatorController extends Controller
     {
         $user = auth()->user();
         $user->update([
-            'is_creator'    => true,
+            'is_creator' => true,
             'creator_since' => now(),
         ]);
 
@@ -40,7 +40,7 @@ class CreatorController extends Controller
     {
         $user = auth()->user();
         $user->update([
-            'is_creator'    => false,
+            'is_creator' => false,
             'creator_since' => null,
         ]);
 

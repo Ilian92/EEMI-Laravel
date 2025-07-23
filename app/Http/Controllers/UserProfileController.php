@@ -59,7 +59,6 @@ class UserProfileController extends Controller
             ]
         );
 
-        // return back()->with('success', __('Abonnement réussi !'));
         return redirect()->route('user-profile.show', ['username' => $creator->username])
             ->with('success', __('Abonnement réussi !'));
 

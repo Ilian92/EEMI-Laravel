@@ -9,13 +9,11 @@ use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-    // Affiche la page principale du dashboard
     public function index()
     {
         return view('dashboard.index');
     }
 
-    // Affiche les abonnements actifs de l’utilisateur
     public function subscriptions()
     {
         $subscriptions = Auth::user()
@@ -27,13 +25,11 @@ class DashboardController extends Controller
         return view('dashboard.abonnements', compact('subscriptions'));
     }
 
-    // Statistiques pour les créateurs : évolution mensuelle des abonnés et revenus
     public function stats()
     {
         $user = Auth::user();
         $start = Carbon::now()->subMonths(11)->startOfMonth();
 
-        // Données existantes
         $labels = $subsData = $revenueData = $unsubsData = [];
 
         for ($i = 0; $i < 12; $i++) {
@@ -60,7 +56,6 @@ class DashboardController extends Controller
             $unsubsData[] = $unsubs;
         }
 
-        // Nouvelles métriques
         $totalSubscribers = Subscription::where('creator_id', $user->id)
             ->where('is_active', true)
             ->count();
